@@ -15,7 +15,9 @@ public class C2SModelSyncPayload {
     }
 
     public static void encode(C2SModelSyncPayload message, FriendlyByteBuf buf) {
-        buf.writeBytes(message.data);
+        // See S2CModelSyncPayload.encode(): encode() may be invoked more than
+        // once per message, so use a fresh position/limit view each time.
+        buf.writeBytes(message.data.duplicate());
     }
 
     public static C2SModelSyncPayload decode(FriendlyByteBuf buf) {

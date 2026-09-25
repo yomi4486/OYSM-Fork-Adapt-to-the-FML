@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.StateSwitchingButton;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
 @Environment(EnvType.CLIENT)
 public class ConfigCheckBox extends StateSwitchingButton implements ISpecialWidget {
 
-    private static final ResourceLocation location = new ResourceLocation(YesSteveModel.MOD_ID, "texture/roulette.png");
+    private static final ResourceLocation location = ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "texture/roulette.png");
 
     private final Consumer<Boolean> consumer2;
 
@@ -26,7 +27,9 @@ public class ConfigCheckBox extends StateSwitchingButton implements ISpecialWidg
         super(x, y, width, 12, false);
         this.component2 = component;
         this.consumer2 = consumer;
-        initTextureValues(0, 0, 128, 12, location);
+        // StateSwitchingButton now takes per-state sprite locations instead of atlas offsets;
+        // reuse the same texture for both states until dedicated sprites are made.
+        initTextureValues(new WidgetSprites(location, location));
     }
 
     public ConfigCheckBox(int x, int y, Component component, Consumer<Boolean> consumer) {

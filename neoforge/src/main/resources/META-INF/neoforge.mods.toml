@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "yes_steve_model"
+version = "${version}"
+displayName = "Yes Steve Model"
+authors = "Tianjin Accessible Care Innovation Development Co., Ltd."
+description = '''
+
+'''
+logoFile = "yesstevemodel.png"
+
+[[mixins]]
+config = "yes_steve_model.mixins.json"
+
+[[dependencies.yes_steve_model]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.yes_steve_model]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.yes_steve_model]]
+modId = "architectury"
+mandatory = true
+versionRange = "[13.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.yes_steve_model]]
+modId = "touhou_little_maid"
+mandatory = false
+versionRange = "[1.5.0,)"
+ordering = "AFTER"
+side = "BOTH"

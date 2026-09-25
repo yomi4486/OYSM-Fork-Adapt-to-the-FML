@@ -50,6 +50,6 @@ public final class ForgeAttributes {
         if (attribute == null) {
             return defaultValue;
         }
-        return entity.getAttributeValue(attribute);
+        return entity.getAttributeValue(net.minecraft.core.registries.BuiltInRegistries.ATTRIBUTE.wrapAsHolder(attribute));
     }
 }

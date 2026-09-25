@@ -33,7 +33,7 @@ public class EffectLevel extends ContextFunction<Entity> {
                         effects += cap.getPositionTracker().getEffectAmplifier(mobEffect);
                     } else if (((IContext<?>)context.entity()).entity() instanceof LivingEntity) {
                         MobEffectInstance mobEffectInstance = ((LivingEntity)((IContext<?>)context.entity()).entity())
-                                .getEffect(mobEffect);
+                                .getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(mobEffect));
                         if (mobEffectInstance != null) {
                             effects += mobEffectInstance.getAmplifier() + 1;
                         }
@@ -42,11 +42,13 @@ public class EffectLevel extends ContextFunction<Entity> {
                             return null;
                         }
 
-                        for (MobEffectInstance mobEffectInstance : ((ArrowEntityAccessor)((IContext<?>)context.entity()).entity())
-                                .getEffects()) {
-                            if (mobEffectInstance.getEffect() == mobEffect) {
-                                effects += mobEffectInstance.getAmplifier() + 1;
-                                break;
+                        net.minecraft.world.item.alchemy.PotionContents potionContents = ((ArrowEntityAccessor) ((IContext<?>) context.entity()).entity()).ysm$getPotionContents();
+                        if (potionContents != null) {
+                            for (MobEffectInstance mobEffectInstance : potionContents.getAllEffects()) {
+                                if (mobEffectInstance.getEffect().value() == mobEffect) {
+                                    effects += mobEffectInstance.getAmplifier() + 1;
+                                    break;
+                                }
                             }
                         }
                     }

@@ -379,14 +379,15 @@ public class YSMBinding extends ContextBinding {
             return null;
         }
         if (context.entity() instanceof Arrow) {
-            activeEffects = ((ArrowEntityAccessor) context.entity()).getEffects();
+            net.minecraft.world.item.alchemy.PotionContents potionContents = ((ArrowEntityAccessor) context.entity()).ysm$getPotionContents();
+            activeEffects = potionContents != null ? potionContents.customEffects() : java.util.List.of();
         } else if (context.entity() instanceof LivingEntity) {
             activeEffects = ((LivingEntity) context.entity()).getActiveEffects();
         } else {
             return null;
         }
         for (MobEffectInstance mobEffectInstance : activeEffects) {
-            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(BuiltInRegistries.MOB_EFFECT.getKey(mobEffectInstance.getEffect()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
+            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().value().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(BuiltInRegistries.MOB_EFFECT.getKey(mobEffectInstance.getEffect().value()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
         }
         return null;
     }

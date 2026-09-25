@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ModernPlayerTextureScreen extends OptionScreen {
 
-    private static final ResourceLocation ICON_TEXTURE = new ResourceLocation(YesSteveModel.MOD_ID, "texture/icon.png");
+    private static final ResourceLocation ICON_TEXTURE = ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "texture/icon.png");
     private static final List<String> CATEGORY_ORDER = List.of("_textures", "main", "extra", "arm", "fp_arm", "tac", "carryon", "parcool", "swem", "slashblade", "tlm", "immersive_melodies", "irons_spell_books", "arrow");
 
     public final ModelAssembly renderContext;
@@ -326,7 +326,7 @@ public class ModernPlayerTextureScreen extends OptionScreen {
             modelHolder.initModelWithTexture(modelId, cap.getCurrentTextureName());
             float cx = (previewLeft + previewRight) / 2.0f + offsetX;
             float cy = previewTop + (previewBottom - previewTop) * 0.65f + offsetY;
-            ModelPreviewRenderer.renderEntityPreview(cx, cy, zoom, pitch, yaw, this.minecraft.getFrameTime(), modelHolder, RendererManager.getPlayerRenderer(), showGround);
+            ModelPreviewRenderer.renderEntityPreview(cx, cy, zoom, pitch, yaw, partialTick, modelHolder, RendererManager.getPlayerRenderer(), showGround);
         });
         RenderSystem.disableScissor();
     }
@@ -375,12 +375,12 @@ public class ModernPlayerTextureScreen extends OptionScreen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double delta) {
         if (isInPreview(mouseX, mouseY)) {
             zoom = Mth.clamp((float) (zoom * (1.0 + delta * 0.1)), 18.0f, 360.0f);
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, scrollX, delta);
     }
 
     private boolean isInPreview(double mouseX, double mouseY) {

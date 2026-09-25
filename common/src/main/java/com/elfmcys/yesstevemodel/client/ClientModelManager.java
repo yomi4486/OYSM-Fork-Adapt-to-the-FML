@@ -154,6 +154,7 @@ public class ClientModelManager {
     }
 
     private static void processServerData(ByteBuffer data) {
+        YesSteveModel.LOGGER.info("[YSM][diag] processServerData called, syncStep=" + syncStep + ", data=" + (data == null ? "null" : (data.remaining() + " remaining bytes")));
         if (data == null) {
             resetClientState();
             return;
@@ -170,7 +171,7 @@ public class ClientModelManager {
             byte[] decrypted;
             if (syncStep == 1) {
                 decrypted = YsmCrypt.decrypt(packetBytes, YsmCrypt.publicKey);
-                System.out.println(Arrays.toString(decrypted));
+                YesSteveModel.LOGGER.info("[YSM][diag] step1 decrypt result: " + (decrypted == null ? "NULL (decrypt failed)" : (decrypted.length + " bytes decrypted")));
                 if (decrypted != null) handlePacket01(decrypted);
             } else if (syncStep == 2) {
                 decrypted = YsmCrypt.decrypt(packetBytes, lastKey);
@@ -544,7 +545,7 @@ public class ClientModelManager {
     }
 
     public static SyncStatus getSyncStatus() {
-        RenderSystem.assertOnGameThread();
+        RenderSystem.assertOnRenderThread();
         return syncState;
     }
 

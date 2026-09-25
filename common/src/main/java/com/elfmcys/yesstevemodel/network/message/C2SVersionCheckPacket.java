@@ -1,5 +1,6 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.capability.AuthModelsCapability;
 import com.elfmcys.yesstevemodel.capability.ModelInfoCapability;
 import com.elfmcys.yesstevemodel.capability.StarModelsCapability;
@@ -31,7 +32,9 @@ public class C2SVersionCheckPacket {
 
     public static void handle(C2SVersionCheckPacket message, PacketContext ctx) {
         ServerPlayer sender = ctx.getSender();
-        if (sender != null && NetworkHandler.setChannelVersion(ctx.getConnection(), message.version)) {
+        boolean firstTime = sender != null && NetworkHandler.setChannelVersion(ctx.getConnection(), message.version);
+        YesSteveModel.LOGGER.info("[YSM][diag] C2SVersionCheckPacket.handle() sender=" + (sender != null ? sender.getGameProfile().getName() : "null") + " firstTime=" + firstTime);
+        if (firstTime) {
             ServerModelManager.validatePlayerModel(sender);
             ModelInfoCapability.get(sender).ifPresent(cap -> {
                 cap.setMandatory(false);
