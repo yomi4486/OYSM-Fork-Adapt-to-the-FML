@@ -5,7 +5,9 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.context.IContext;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.LivingEntityFunction;
 import com.elfmcys.yesstevemodel.geckolib3.util.MolangUtils;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,20 +18,24 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 public class EquippedEnchantmentLevel extends LivingEntityFunction {
     @Override
     public Object eval(ExecutionContext<IContext<LivingEntity>> context, ArgumentCollection arguments) {
-        Enchantment enchantment;
         EquipmentSlot slotType = MolangUtils.parseSlotType(context, arguments, 0);
         if (slotType == null) {
             return null;
         }
-        ItemStack stack = CosmeticArmorHelper.getArmorItem(context.entity().entity(), slotType);
+        LivingEntity livingEntity = context.entity().entity();
+        ItemStack stack = CosmeticArmorHelper.getArmorItem(livingEntity, slotType);
         if (stack.isEmpty()) {
             return 0;
         }
         int enchantmentLevel = 0;
         for (int i = 1; i < arguments.size(); i++) {
             ResourceLocation id = arguments.getResourceLocation(context, 1);
-            if (id != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(id)) != null) {
-                enchantmentLevel += EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
+            Holder<Enchantment> enchantmentHolder;
+            if (id != null && (enchantmentHolder = livingEntity.level().registryAccess()
+                    .lookupOrThrow(Registries.ENCHANTMENT)
+                    .get(ResourceKey.create(Registries.ENCHANTMENT, id))
+                    .orElse(null)) != null) {
+                enchantmentLevel += EnchantmentHelper.getItemEnchantmentLevel(enchantmentHolder, stack);
             }
         }
         return enchantmentLevel;

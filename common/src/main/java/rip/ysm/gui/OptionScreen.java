@@ -268,7 +268,7 @@ public abstract class OptionScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        renderBackground(g);
+        renderBackground(g, mouseX, mouseY, partialTick);
 
         renderPanelBackdrop(g);
 
@@ -526,7 +526,7 @@ public abstract class OptionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double delta) {
         for (OptionRow<?> row : activeRows) {
             if (row.isOverlayOpen() && row.overlayMouseScrolled(mouseX, mouseY, delta, rowScrollDisplay)) {
                 return true;
@@ -540,7 +540,7 @@ public abstract class OptionScreen extends Screen {
             rowScrollOffset = Mth.clamp((int) (rowScrollOffset - delta * 20), 0, maxRowScroll);
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, scrollX, delta);
     }
 
     private boolean isOnRowScrollbar(double mouseX, double mouseY) {

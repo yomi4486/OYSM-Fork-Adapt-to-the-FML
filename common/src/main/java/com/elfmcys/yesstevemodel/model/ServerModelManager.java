@@ -685,6 +685,7 @@ public final class ServerModelManager {
     }
 
     public static void nativeSyncModels(UUID[] uuids, String[] playerNames, String[] modelIds, Object callback) {
+        YesSteveModel.LOGGER.info("[YSM][diag] nativeSyncModels called, uuids=" + uuids.length + ", CACHE_NAME_INFO.size()=" + CACHE_NAME_INFO.size() + ", keys=" + CACHE_NAME_INFO.keySet());
         initRateLimit();
         YSMThreadPool.submitSync(() -> {
             try {

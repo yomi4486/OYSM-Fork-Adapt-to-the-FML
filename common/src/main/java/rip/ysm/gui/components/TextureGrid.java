@@ -125,7 +125,7 @@ public final class TextureGrid extends OptionRow<Object> {
         int sw = (int) (TEX_BTN_W * scale);
         int sh = (int) (previewH * scale);
         RenderSystem.enableScissor(sx, sy, sw, sh);
-        ModelPreviewRenderer.renderLivingEntityPreview(x + TEX_BTN_W / 2.0f, y + TEX_BTN_H / 2.0f + 24.0f, 35.0f, mc.getFrameTime(), holder, RendererManager.getPlayerRenderer(), false, true);
+        ModelPreviewRenderer.renderLivingEntityPreview(x + TEX_BTN_W / 2.0f, y + TEX_BTN_H / 2.0f + 24.0f, 35.0f, pt, holder, RendererManager.getPlayerRenderer(), false, true);
         RenderSystem.disableScissor();
     }
 

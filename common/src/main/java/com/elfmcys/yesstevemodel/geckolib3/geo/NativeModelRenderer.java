@@ -165,7 +165,7 @@ public class NativeModelRenderer {
                     tempNorm.set(quad.normal).mul(globalNormalMat).normalize();
                     for (int v = 0; v < 4; v++) {
                         tempPos.set(quad.positions[v].x(), quad.positions[v].y(), quad.positions[v].z(), 1.0f).mul(globalBoneMat);
-                        vertexConsumer.vertex(tempPos.x(), tempPos.y(), tempPos.z(), r, g, b, a, quad.uvs[v].x(), quad.uvs[v].y(), packedOverlay, currentPackedLight, tempNorm.x(), tempNorm.y(), tempNorm.z());
+                        vertexConsumer.addVertex(tempPos.x(), tempPos.y(), tempPos.z(), net.minecraft.util.FastColor.ARGB32.colorFromFloat(a, r, g, b), quad.uvs[v].x(), quad.uvs[v].y(), packedOverlay, currentPackedLight, tempNorm.x(), tempNorm.y(), tempNorm.z());
                     }
                 }
             }
@@ -254,11 +254,11 @@ public class NativeModelRenderer {
         VertexConsumer vc = (VertexConsumer) v;
         int fIdx = 0, iIdx = 0;
         for (int n = 0; n < vertexCount; n++) {
-            vc.vertex(
+            vc.addVertex(
                     // position
                     f.get(fIdx),     f.get(fIdx + 1), f.get(fIdx + 2),
-                    // rgba
-                    f.get(fIdx + 3), f.get(fIdx + 4), f.get(fIdx + 5), f.get(fIdx + 6),
+                    // rgba packed into a single ARGB int
+                    net.minecraft.util.FastColor.ARGB32.colorFromFloat(f.get(fIdx + 6), f.get(fIdx + 3), f.get(fIdx + 4), f.get(fIdx + 5)),
                     // uv
                     f.get(fIdx + 7), f.get(fIdx + 8),
                     // overlay light

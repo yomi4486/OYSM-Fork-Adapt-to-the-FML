@@ -13,9 +13,13 @@ dependencies {
     // Architectury API common artifact — 提供 Event<>、ClientLifecycleEvent、PlayerEvent 等抽象事件类型。
     modCompileOnly "dev.architectury:architectury:$rootProject.architectury_api_version"
 
-    // Forge Config API Port — 让 common 在编译期看到 net.minecraftforge.common.ForgeConfigSpec 等类。
-    // 运行时不绑定：Forge 平台由 Forge 自身提供这些类，Fabric 平台由 fabric 子项目的 modImplementation 引入 port。
-    modCompileOnly "maven.modrinth:forge-config-api-port:$rootProject.forge_config_api_port_version"
+    // NeoForge — common only needs this at compile time to see net.neoforged.neoforge.common.ModConfigSpec
+    // (config classes live directly in common, see ConfigRegistration.java). Since this project currently
+    // only builds a NeoForge platform (forge/fabric are parked), this is not cross-platform-safe if those
+    // platforms are ever re-enabled — that config code would need porting back to an @ExpectPlatform bridge.
+    compileOnly "net.neoforged:neoforge:$rootProject.neoforge_version"
+    // net.neoforged.fml.config.ModConfig lives in FancyModLoader, not the neoforge artifact itself.
+    compileOnly "net.neoforged.fancymodloader:loader:4.0.44"
 
     // ImageStream — 用于 avif/webp/jpeg 解码。运行时由 forge 子项目通过 jar-in-jar 内嵌。
     compileOnly "com.github.TartaricAlkaline:ImageStream:-SNAPSHOT"
